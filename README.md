@@ -6,4 +6,6 @@ Readme.md
 
 This is an addition that is a mistake.
 
-Adding this line directly from GitHUB at 1542, Friday, Aug. 23.
+Adding this line directly from GitHUB at 1542, Friday, Aug. 23. 
+
+This is added inside Branch1 only.  should not show up in Master.
