@@ -1,0 +1,53 @@
+opprg 4000 2
+noop Created by: T.W. Paige (Nimrod) on 1 Aug 2015
+noop Last modifed by: T.W. Paige (Nimrod) on 4 Sept 2015
+noop Last uploaded to gaime by: T.W. Paige on 15 Aug 2015
+noop -
+noop Copyright 2015 T.W. Paige, all rights reserved
+noop Copyright extends to all files associted with the WarCraft System whether listed in this repository or not.
+noop -
+noop Object 4000 Prog 2
+noop DEPLOY STRONGHOLD
+noop read the information on the planning table to start
+info maxforts room -1 obj 4000 oval0
+info forts room -1 obj 4000 oval1
+info casualtyroom room -1 obj 4000 oval2
+info deployroom room -1 obj 4000 oval3
+info defendervnum room -1 obj 4000 oval4
+info modifier room -1 obj 4000 oval5
+info clanowner room -1 obj 4000 taste
+info deployroomname room &(deployroom) name
+set var fortvnum 4001
+info username room -1 char -1 name
+info usersdesc room -1 char -1 sdesc
+noop check to see if this person is of sufficient rank in the clanowner
+if clanrank(&(clanowner),corporal)
+noop Continue
+else do
+vstr You cannot perform this command.
+halt -
+fi done
+noop Let's seed if there is a fort in the deploy room
+if oexist(&(fortvnum),&(deployroom)
+vstr There is already a stronghold deployed in &(deployroomname).
+halt -
+fi done
+noop No fort, check counts.
+if (&(forts)=&(maxforts))
+vstr You have already deployed the maximum of &(maxforts) strongholds.
+halt -
+fi done
+if (&(forts)>&(maxforts))
+vstr You have already deployed the maximum of &(maxforts) strongholds.
+halt -
+fi done
+noop We've done all our checking, let's load the fort and increment the count.
+math forts add 1
+setval room -1 obj 4000 oval1 &(forts)
+put &(fortvnum) &(deployroom)
+setval room &(deployroom) obj &(fortvnum) name &(1) 
+vstr putting &(fortvnum) &(deployroom)
+vstr value of forts is: &(forts)
+vstr You issue the order for a new stronghold to be deployed at &(deployroomname).
+atwrite army&(clanowner)xxx "Stronghold Deployed." A new stronghold named &(1) was deployed to &(deployroomname) by &(usersdesc).
+force -1 -1 setroomnum &(deployroom) 1
