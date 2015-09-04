@@ -1,11 +1,13 @@
-Test2
+Shadows of Isildur Laketown WARCRAFT
 =====
 
-This is a test file for Test2 repository.
-Readme.md
+Other than learning the relevant commands, which can be learned in-game, there is nothing that can be gained from these
+files that would help players in any significant manner.
 
-This is an addition that is a mistake.
+All important level settings and stats are tracked within the game itself.
 
-Adding this line directly from GitHUB at 1542, Friday, Aug. 23.
+Feel free to use as you see fit, so long as you follow the GNU License attached to this repo.
 
-Modifying 4 Sept, 2015 @1305 - Nim
+Last Updated: 4 September 2015
+
+Nimrod
