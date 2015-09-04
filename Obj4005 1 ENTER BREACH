@@ -1,0 +1,34 @@
+opprg 4005 1
+noop Created by: T.W. Paige (Nimrod) on 4 Sept 2015
+noop Last modifed by: T.W. Paige (Nimrod) on 4 Sept 2015
+noop Last uploaded to gaime by: T.W. Paige on never
+noop -
+noop Copyright 2015 T.W. Paige, all rights reserved
+noop Copyright extends to all files associted with the WarCraft System whether listed in this repository or not.
+noop -
+noop Object 4005 Prog
+noop ENTER BREACH prog
+noop No need to check if breach obj exists, as this prog cannot run
+noop if it does not.
+noop Reach oval0 (toroom) and oval1 (inroomdata)
+info inroom room -1 vnum
+info inroomdata room -1 obj 4005 oval0
+info toroom room -1 obj 4005 oval1
+if fighting()
+noop what to do if they're fighting
+noop Don't allow anything to happen while they're fighting for now.
+noop delay 12 xxenterxx xxbreachxx <timestamp>
+noop use the timestamp to make sure no one uses just 'xxenterxx xxbreachxx'
+noop to cheat the system. -Nim
+vstr You're fighting for your life!
+vbr -
+halt -
+fi done
+noop They're not fighting, let's move them (one at a time)
+noop Remember, this is for entering AND leaving a stronghold.
+vstr You near the breach and slip through.
+vbr -
+atecho &(toroom) Stepping over some debris, $n steps through the breach.
+atlook &(toroom)
+trans &(toroom)
+@
