@@ -7,3 +7,5 @@ Readme.md
 This is an addition that is a mistake.
 
 Adding this line directly from GitHUB at 1542, Friday, Aug. 23.
+
+Modifying 4 Sept, 2015 @1305 - Nim
