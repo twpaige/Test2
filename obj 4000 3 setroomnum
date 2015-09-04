@@ -1,0 +1,115 @@
+Object 4000 Program Number 3:
+noop Shadows of Isildur Warcraft progs and crafts
+noop -
+noop Created by: T.W. Paige on 14 July 2015
+noop Last modifed by: T.W. Paige on 10 Aug 2015
+noop Last uploaded to gaime by: T.W. Paige on 10 Aug 2015
+noop -
+noop A central repository for all Warcraft progs and crafts.
+noop -
+noop Copyright 2015 T.W. Paige, all rights reserved
+noop Copyright extends to all files associted with the WarCraft System whether listed in this repository or not.
+noop -
+noop Only Run one time on planning table when a stronghold is deployed.
+noop This sets the palisade room number on the stronghold object
+noop First room number to check is 4002 and we increment by 10 up to 20 rooms.
+noop 4002, 4012, 4022, ... 4182, 4192 (is the last one for now, can add more.
+noop command is thus: setfort <room where fort is> <try>
+noop first command is: setfort 52104 1 timestamp
+set var maxrooms 20
+set var timestamp 0
+math timestamp timestamp
+set var baseroom 4002
+math baseroom sub 10
+set var tryroom &(2)
+set var fortroom &(1)
+info maproom room -1 vnum
+set var nexttry &(2)
+math nexttry add 1
+if (&(tryroom)>&(maxrooms))
+vstr There was an error setting the room number for the stronghold.
+vstr Please let an administrator know.
+vbr -
+halt -
+fi done
+math tryroom multiply 10
+math tryroom add &(baseroom)
+noop we have our tryroom now, let's read the data object inside and see if it is unused.
+if oexist(4002,&(tryroom))
+noop continue
+else do
+vstr The data object does not exist in room &(tryroom).  Let an administrator know.
+halt -
+fi done
+info casualties room &(tryroom) obj 4002 cost
+if (&(casualties)=99999)
+vstr The room: &(tryroom) is available for use.
+noop let's set all the pertinent details on the data object (4002) in room tryroom.
+setval room &(tryroom) obj 4002 oval0 &(maproom)
+setval room &(tryroom) obj 4002 oval1 99999
+setval room &(tryroom) obj 4002 oval2 99999
+setval room &(tryroom) obj 4002 oval3 1
+setval room &(tryroom) obj 4002 oval4 1
+setval room &(tryroom) obj 4002 oval5 1
+setval room &(tryroom) obj 4002 weight 1
+setval room &(tryroom) obj 4002 cost 1
+setval room &(tryroom) obj 4002 quality &(fortroom)
+noop Let's see if the right mob exists in tryroom, if it does, do nothing, else load one there.
+info defender room -1 obj 4000 oval4
+if mexist(&(defender),&(tryroom))
+noop The defender mob exists, let's remove it, must do both in case it was a previous enemy position.
+exmob 4000 &(tryroom)
+exmob 4001 &(tryroom)
+fi done
+noop Let's load the mob in try room.
+loadmob &(defender) &(tryroom) stayput
+noop let's load him a key as well and force the mob to pick it up
+put 4004 &(tryroom)
+force &(defender) &(tryroom) get key
+noop We should never have to load 4001 in the fortroom, adding this just in case.
+if oexist(4001,&(fortroom))
+noop it exists, do nothing.
+vstr 4001 exists in &(fortroom)
+else do
+noop load the object
+vstr 4001 does NOT exist in &(fortroom)  LOADING.
+put 4001 &(fortroom)
+fi done
+setval room &(fortroom) obj 4001 oval0 &(tryroom)
+noop let's back up one so we start at the beginning.
+math tryroom sub 1
+noop This is room 1. - Palisade Exterior.
+purge &(tryroom)
+if oexist(4003,&(tryroom))
+noop it exists, do nothing.
+else do
+put 4003 &(tryroom)
+fi done
+noop The correct object is loaded in the exterior room.  Let's set the values now.
+vstr setval room &(tryroom) obj 4003 quality &(fortroom)
+setval room &(tryroom) obj 4003 quality &(fortroom)
+math tryroom add 1
+noop This is room 2. Palisade Interior.
+purge &(tryroom)
+math tryroom add 1
+noop This is Room 3.  Palisade Walls.
+purge &(tryroom)
+math tryroom add 1
+noop This is room 4.  Palisade Storeroom.
+purge &(tryroom)
+math tryroom add 1
+noop This is room 5.  Palisade Infirmary.
+purge &(tryroom)
+math tryroom add 1
+noop This is room 6. Palisade Barracks.
+purge &(tryroom)
+vstr Done.
+halt -
+else do
+vstr The room: &(tryroom) is NOT available.  Let's try a different one.
+recall the prog with the next try if it can.
+force -1 -1 say I'm going to try to setroomum &(fortroom) &(nexttry)
+force -1 -1 setroomnum &(fortroom) &(nexttry)
+fi done
+vstr end of prog.
+@
