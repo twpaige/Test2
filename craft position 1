@@ -1,0 +1,100 @@
+cpprg position 1
+noop Prog for ATTACK POSITION craft position 1
+noop Originally written by Nimrod 16 August 2015
+noop Last modified by Nimrod  1018 4 September 2015
+noop get a random number between 30 - 100
+noop apply the random damage to the position
+noop Then call up another prog to see if we send out a defender or two?
+vstr You've dealt some damage to the position.
+noop get room number
+noop get room number we are in now and adding 1 to get location of DATA object.
+info usersdesc room -1 char -1 sdesc
+info inroom room -1 vnum
+info dataroom room -1 vnum
+vstr Temp data room: &(dataroom)
+math dataroom add 1
+vstr We are in room: &(inroom)
+vstr The data room is: &(dataroom)
+info armyname room &(dataroom) obj 4002 name
+vstr Army Name: &(armyname)
+info maproomnum room &(dataroom) obj 4002 oval0
+vstr Map Room: &(maproomnum)
+info mirkroom room &(dataroom) obj 4002 quality
+vstr Location in Mirkwood: &(mirkroom)
+info deployroomname room &(mirkroom) name
+info forthp room &(dataroom) obj 4002 oval1
+vstr Fort Hit Points: &(forthp)
+info maxforthp room &(dataroom) obj 4002 oval2
+vstr Max Fort Hit Points: &(maxforthp)
+info fortdefenders room &(dataroom) obj 4002 oval3
+vstr Defenders: &(fortdefenders)
+info fortgatherers room &(dataroom) obj 4002 oval4
+vstr Gatherers: &(fortgatherers)
+info fortscouts room &(dataroom) obj 4002 oval5
+vstr Scouts: &(fortscouts)
+noop ----
+info maxforts room &(maproomnum) obj 4000 oval0 
+info forts room &(maproomnum) obj 4000 oval1 
+info casualtyroom room &(maproomnum) obj 4000 oval2 
+info deployroom room &(maproomnum) obj 4000 oval3 
+info defendervnum room &(maproomnum) obj 4000 oval4 
+info modifier room &(maproomnum) obj 4000 oval5 
+info clanowner room &(maproomnum) obj 4000 taste 
+vbr - 
+vstr Maximum forts: &(maxforts) 
+vstr Forts Deployed: &(forts) 
+vstr Casualty Room: &(casualtyroom) 
+vstr Deploy Room: &(deployroom) 
+vstr Defender vnum: &(defendervnum) 
+vstr Modifier: &(modifier) 
+vstr Clan: &(clanowner)
+set var relativestr &(forthp)
+vstr forthp: &(forthp)
+if fighting()
+vstr You're fighting, this can't possibly be running because crafts are interupted.
+set random 7d10
+else do
+set random 10d10
+fi done
+noop Need to check to make sure we don't go less than zero because negative numbers
+noop get wonky in prog variables.  Check before we do the subtraction to avoid negatives.
+if (&(forthp)>&(random))
+math forthp sub &(random)
+else do
+math forthp sub &(forthp)
+fi done
+vstr Damage caused: &(random)
+vstr New forthp: &(forthp)
+noop Set the new forthp
+setval room &(dataroom) obj 4002 oval1 &(forthp)
+fi done
+noop Let's write the activity to the war board
+atwrite army&(clanowner)xxx "#6&(armyname)#0 attacked!" The stronghold named #6&(armyname)#0 in #6&(deployroomname)#0 has been attacked by #5&(usersdesc)#0.
+noop Let's see if we should load a breach object.
+if (&(forthp)>1000)
+vstr HP is greater than 1000, lets' stop here.
+halt -
+fi done
+noop There should be a breach, let's check to see if there is one and if not, load one.
+if oexist(4005, -1)
+vstr A breach already exists.
+else do
+vstr let's load a breach and set the ovals correctly.
+put 4005 &(inroom)
+noop - Read room we're in and the room we want to go to.
+noop - Also load a breach in the room we want to go to and set the data there too.
+noop oval0 on obj 4005 is the room we are moving to. (dataroom)
+noop oval1 on obj 4005 is the room in which we belong (inroom)
+setval room -1 obj 4005 oval0 &(dataroom)
+setval room -1 obj 4005 oval1 &(inroom)
+fi done
+noop let's see if there's a breach in (dataroom)
+if oexist(4005, &(dataroom))
+noop It exists, stop the prog
+halt -
+fi done
+noop The breach does not exist, let's load it and set the vals
+put 4005 &(dataroom)
+setval room &(dataroom) obj 4005 oval0 &(inroom)
+setval room &(dataroom) obj 4005 oval1 &(dataroom)
+@
