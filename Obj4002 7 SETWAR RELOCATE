@@ -1,0 +1,39 @@
+opprg 4002 7
+noop Created by: T.W. Paige (Nimrod) on 18 July 2015
+noop Last modifed by: T.W. Paige (Nimrod) on 4 Sept 2015
+noop Last uploaded to gaime by: T.W. Paige on 15 Aug 2015
+noop -
+noop Copyright 2015 T.W. Paige, all rights reserved
+noop Copyright extends to all files associted with the WarCraft System whether listed in this repository or not.
+noop -
+info mirkroom room -1 obj 4002 quality
+vstr Location in Mirkwood: &(mirkroom)
+if (&(1)=north)
+info goto_room room &(mirkroom) exit &(1) vnum
+fi done
+if (&(1)=south)
+info goto_room room &(mirkroom) exit &(1) vnum
+fi done
+if (&(1)=east)
+info goto_room room &(mirkroom) exit &(1) vnum
+fi done
+if (&(1)=west)
+info goto_room room &(mirkroom) exit &(1) vnum
+fi done
+if (&(goto_room)>1000)
+vstr There's a valid movement to the &(1) ordered that will land us in room &(goto_room)
+else do
+vbr -
+vstr The direction you have specified is invalid.  Either there is no exit in that direction,
+vstr or you have specified a direction other than #4north, south, east,#0 or #4west#0.
+fi done
+noop Let's check to see if there's another palisade object in the goto room.
+if oexist(4001, &(goto_room))
+vstr There is already a stronghold in that direction.  Order cancelled.
+halt -
+fi done
+noop Move the palisade
+transobj 4001 &(mirkroom) &(goto_room)
+noop Update the Room number on the data object vnum 4002 (quality)
+setval room -1 obj 4002 quality &(goto_room)
+@
