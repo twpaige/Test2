@@ -1,4 +1,4 @@
-Shadows of Isildur Laketown WARCRAFT
+Shadows of Isildur Warcraft Progs & Crafts
 =====
 
 Other than learning the relevant commands, which can be learned in-game, there is nothing that can be gained from these
@@ -8,6 +8,13 @@ All important level settings and stats are tracked within the game itself.
 
 Feel free to use as you see fit, so long as you follow the GNU License attached to this repo.
 
-Last Updated: 4 September 2015
+Shadows of Isildur Warcraft progs and crafts
 
-Nimrod
+A central repository for all Warcraft progs and crafts.
+
+Naming convention:
+
+First Word: CRAFT, OBJ, MOB, ROOM
+Second Word: Craft Name, obj vnum, mob vnum, room number
+Third Word: Prog number
+Additional Wording: Prog or Craft Command to initiate
